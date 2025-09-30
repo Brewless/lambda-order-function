@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  BrewlessCreateOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: createOrder
+      Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+      Runtime: java17
+      CodeUri: ./
+      MemorySize: 512
+      Timeout: 300
+      Environment:
+        Variables:
+          MAIN_CLASS: com.brewless.order.OrderApplication
+          MONGO_HOST: host.docker.internal
+          SPRING_CLOUD_FUNCTION_DEFINITION: createOrder
+  BrewlessGetOrdersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getOrders
+      Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+      Runtime: java17
+      CodeUri: ./
+      MemorySize: 512
+      Timeout: 300
+      Environment:
+        Variables:
+          MAIN_CLASS: com.brewless.order.OrderApplication
+          MONGO_HOST: host.docker.internal
+          SPRING_CLOUD_FUNCTION_DEFINITION: getOrders
+  BrewlessGetOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getOrder
+      Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+      Runtime: java17
+      CodeUri: ./
+      MemorySize: 512
+      Timeout: 300
+      Environment:
+        Variables:
+          MAIN_CLASS: com.brewless.order.OrderApplication
+          MONGO_HOST: host.docker.internal
+          SPRING_CLOUD_FUNCTION_DEFINITION: getOrder
+  BrewlessCreateOrderFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/createOrder
+      RetentionInDays: 7
+  BrewlessGetOrdersFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/getOrders
+      RetentionInDays: 7
+  BrewlessGetOrderFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/getOrder
+      RetentionInDays: 7
